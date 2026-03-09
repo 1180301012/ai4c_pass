@@ -1,0 +1,1 @@
+["HardswishOptimization", "FlattenOptimization", "Conv2DHardswishFlattenFusion", "Conv2DHardswishFusion"]

@@ -1,0 +1,1 @@
+["PointwiseConv1x1ChannelSlice", "StridedConvChannelSlice", "HighPerfConvChannelSlice"]

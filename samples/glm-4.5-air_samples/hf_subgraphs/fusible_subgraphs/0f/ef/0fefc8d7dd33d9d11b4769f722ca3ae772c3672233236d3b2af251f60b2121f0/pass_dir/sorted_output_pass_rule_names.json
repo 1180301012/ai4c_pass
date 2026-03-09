@@ -1,0 +1,1 @@
+["Conv2D_Flatten_Transpose_Fusion", "LayerNorm_Optimization", "Expand_Optimization"]

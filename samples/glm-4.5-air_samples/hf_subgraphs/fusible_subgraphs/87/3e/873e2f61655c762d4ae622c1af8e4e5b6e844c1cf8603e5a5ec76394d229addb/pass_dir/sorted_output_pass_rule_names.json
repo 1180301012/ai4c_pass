@@ -1,0 +1,1 @@
+["FuseBatchNormReLU", "FuseConv2DAdd_1x1", "FuseInterpolateAdd_Bilinear"]
