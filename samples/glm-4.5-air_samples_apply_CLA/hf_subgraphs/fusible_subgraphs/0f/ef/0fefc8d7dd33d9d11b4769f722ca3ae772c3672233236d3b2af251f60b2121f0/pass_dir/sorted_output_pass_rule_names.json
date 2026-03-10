@@ -1,0 +1,1 @@
+["FuseConvFlattenTranspose", "OptimizeLayerNorm", "FuseFlattenTranspose"]

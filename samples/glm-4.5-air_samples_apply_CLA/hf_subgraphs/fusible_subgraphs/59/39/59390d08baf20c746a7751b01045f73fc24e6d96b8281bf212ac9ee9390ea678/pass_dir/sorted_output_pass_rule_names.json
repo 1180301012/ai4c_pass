@@ -1,0 +1,1 @@
+["FlattenTransposeFusion", "SimpleTestPass", "OptimizeTranspose", "OptimizeDetach", "OptimizeTypeAs"]

@@ -1,0 +1,1 @@
+# This file is no longer needed - replaced by OptimizeEmbeddingIndexPreprocessing_128.py and OptimizeEmbeddingIndexPreprocessing_512.py
