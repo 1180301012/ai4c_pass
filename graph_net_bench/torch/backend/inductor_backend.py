@@ -8,7 +8,11 @@ class InductorBackend(GraphCompilerBackend):
         
 
     def __call__(self, model):
-        return torch.compile(model, backend="inductor")
+        mode = self.config.get("inductor_mode", "default")
+        assert mode in [
+            "default", "reduce-overhead", "max-autotune", "max-autotune-no-cudagraphs"
+        ], f"Invalid mode: {mode}"
+        return torch.compile(model, backend="inductor", mode=mode)
 
     def synchronize(self):
         if torch.cuda.is_available():
