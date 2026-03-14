@@ -46,7 +46,13 @@ python -m scripts.eval_ai4c_samples \
   --device cuda \
   --warmup 25 \
   --trials 100 \
-  --output-root ./tmp/ai4c_eval_logs
+  --output-root ./tmp/ai4c_eval_logs/a30-inductor_max_tune \
+  --config "$(base64 -w 0 <<EOF
+{
+  "inductor_mode": "max-autotune-no-cudagraphs"
+}
+EOF
+)"
 ```
 
 ### Mode B: Evaluate from dumped sample root

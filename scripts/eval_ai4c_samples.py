@@ -3,23 +3,27 @@ from __future__ import annotations
 
 import argparse
 import base64
+import binascii
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+
 import numpy as np
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from graph_net_bench import analysis_util
 from graph_net_bench.aggregate_es_scores import get_weights
 from graph_net_bench.positive_tolerance_interpretation_manager import (
     get_positive_tolerance_interpretation,
     get_supported_positive_tolerance_interpretation_types,
 )
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
 
 
 def resolve_path(path_text: str, workspace_root: Path) -> Path:
@@ -32,6 +36,42 @@ def resolve_path(path_text: str, workspace_root: Path) -> Path:
 def encode_config(config: dict[str, Any]) -> str:
     payload = json.dumps(config, ensure_ascii=True)
     return base64.b64encode(payload.encode("utf-8")).decode("utf-8")
+
+
+def _parse_json_with_optional_trailing_commas(text: str) -> dict[str, Any]:
+    normalized = text.strip()
+    # Accept relaxed JSON snippets with trailing commas before } or ].
+    normalized = re.sub(r",\s*([}\]])", r"\1", normalized)
+    config = json.loads(normalized)
+    if not isinstance(config, dict):
+        raise ValueError("--config must decode to a JSON object")
+    return config
+
+
+def decode_config_arg(config_text: str | None) -> dict[str, Any]:
+    if config_text is None:
+        return {}
+
+    text = config_text.strip()
+    if not text or text == "None":
+        return {}
+
+    # If it looks like inline JSON, parse directly (with relaxed trailing-comma support).
+    if text.startswith("{") or text.startswith("["):
+        return _parse_json_with_optional_trailing_commas(text)
+
+    # Otherwise treat as base64-encoded JSON.
+    try:
+        decoded = base64.b64decode(text, validate=True).decode("utf-8")
+    except (binascii.Error, UnicodeDecodeError) as e:
+        raise ValueError(
+            "--config is neither valid JSON nor valid base64-encoded JSON"
+        ) from e
+
+    try:
+        return _parse_json_with_optional_trailing_commas(decoded)
+    except json.JSONDecodeError as e:
+        raise ValueError("Decoded --config is not valid JSON") from e
 
 
 def run_test_compiler_for_sample(
@@ -76,7 +116,13 @@ def run_test_compiler_for_sample(
             "output_pass_pattern_limit": args.output_pass_pattern_limit,
             "output_pass_replacement_func_limit": args.output_pass_replacement_func_limit,
         }
+
+        # User config takes precedence over default pass_mgr config.
+        config.update(args.user_config)
         cmd.extend(["--config", encode_config(config)])
+    elif args.user_config:
+        # For non-pass_mgr backends (e.g. inductor), pass user config through.
+        cmd.extend(["--config", encode_config(args.user_config)])
 
     log_path.parent.mkdir(parents=True, exist_ok=True)
     run_env = os.environ.copy()
@@ -162,6 +208,7 @@ def discover_sample_dirs(samples_root: Path) -> list[tuple[int, str]]:
 def main(args) -> None:
     args.workspace_root = args.workspace_root.resolve()
     args.output_root = args.output_root.resolve()
+    args.user_config = decode_config_arg(args.config)
 
     if args.sample_list is None and args.samples_root is None:
         raise ValueError("Please provide either --sample-list or --samples-root")
@@ -295,6 +342,15 @@ if __name__ == "__main__":
         default="pass_mgr",
         choices=["pass_mgr", "nope", "inductor"],
         help="Compiler backend passed to test_compiler.",
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=None,
+        help=(
+            "Compiler config in base64-encoded JSON (preferred) or raw JSON string. "
+            "For pass_mgr, this config overrides default pass_mgr config keys."
+        ),
     )
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--warmup", type=int, default=25)
