@@ -1,0 +1,10 @@
+[
+    "FuseMatmulView_32_512",
+    "FuseMatmulView_1_80",
+    "FuseMatmulView_1_512",
+    "FuseMatmulView_256_304",
+    "FuseMatmulView_1_304",
+    "FuseMatmulView_256_80",
+    "FuseMatmulView_64_304",
+    "FuseMatmulView_64_80"
+]

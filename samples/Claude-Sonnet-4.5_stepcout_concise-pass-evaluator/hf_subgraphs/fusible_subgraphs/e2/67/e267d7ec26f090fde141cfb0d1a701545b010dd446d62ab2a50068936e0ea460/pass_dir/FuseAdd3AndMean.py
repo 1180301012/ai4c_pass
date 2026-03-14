@@ -1,0 +1,96 @@
+import torch
+import triton
+import triton.language as tl
+
+
+def pattern(in_0, in_1, in_2):
+    """
+    Pattern: Add 3 tensors and compute mean over spatial dimensions
+    tmp_0 = in_1 + in_2
+    tmp_0 += in_0
+    tmp_1 = tmp_0
+    tmp_2 = tmp_1.mean((2, 3), keepdim=True)
+    return (tmp_1, tmp_2)
+    """
+    tmp_0 = in_1 + in_2
+    tmp_0 += in_0
+    tmp_1 = tmp_0
+    tmp_2 = tmp_1.mean((2, 3), keepdim=True)
+    return (tmp_1, tmp_2)
+
+
+def replacement_args(in_0, in_1, in_2):
+    return (in_0, in_1, in_2)
+
+
+@triton.jit
+def fused_add3_mean_kernel(
+    in0_ptr, in1_ptr, in2_ptr, sum_ptr, mean_ptr,
+    B, C, H, W,
+    HW: tl.constexpr,
+    BLOCK_SIZE: tl.constexpr,
+):
+    """
+    Fused kernel: Add 3 tensors elementwise and compute spatial mean
+    Input shape: [B, C, H, W]
+    Output: sum [B, C, H, W], mean [B, C, 1, 1]
+    """
+    # Each program handles one (batch, channel) slice
+    bc_idx = tl.program_id(0)
+    
+    # Compute spatial sum for this (batch, channel)
+    spatial_sum = 0.0
+    
+    # Process spatial dimensions in blocks
+    for block_start in range(0, HW, BLOCK_SIZE):
+        offsets = block_start + tl.arange(0, BLOCK_SIZE)
+        mask = offsets < HW
+        
+        # Base pointer for this (batch, channel, spatial_location)
+        base_idx = bc_idx * HW + offsets
+        
+        # Load from all 3 inputs
+        in0 = tl.load(in0_ptr + base_idx, mask=mask, other=0.0)
+        in1 = tl.load(in1_ptr + base_idx, mask=mask, other=0.0)
+        in2 = tl.load(in2_ptr + base_idx, mask=mask, other=0.0)
+        
+        # Compute sum
+        result = in0 + in1 + in2
+        
+        # Store sum result
+        tl.store(sum_ptr + base_idx, result, mask=mask)
+        
+        # Accumulate for mean
+        spatial_sum += tl.sum(result)
+    
+    # Store mean (only first thread in spatial dimension writes)
+    mean_val = spatial_sum / HW
+    tl.store(mean_ptr + bc_idx, mean_val)
+
+
+@torch.fx.wrap
+def fused_add3_mean(in_0, in_1, in_2):
+    """Wrapper for fused add3 + mean kernel"""
+    B, C, H, W = in_0.shape
+    HW = H * W
+    
+    # Output tensors
+    sum_out = torch.empty_like(in_0)
+    mean_out = torch.empty((B, C, 1, 1), dtype=in_0.dtype, device=in_0.device)
+    
+    # Launch kernel with one program per (batch, channel)
+    num_programs = B * C
+    BLOCK_SIZE = 1024
+    
+    fused_add3_mean_kernel[(num_programs,)](
+        in_0, in_1, in_2, sum_out, mean_out,
+        B, C, H, W,
+        HW=HW,
+        BLOCK_SIZE=BLOCK_SIZE,
+    )
+    
+    return (sum_out, mean_out)
+
+
+def replacement_func():
+    return fused_add3_mean

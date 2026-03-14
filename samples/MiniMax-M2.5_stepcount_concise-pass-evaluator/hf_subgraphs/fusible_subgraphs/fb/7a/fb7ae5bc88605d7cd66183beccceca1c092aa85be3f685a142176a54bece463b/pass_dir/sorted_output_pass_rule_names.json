@@ -1,0 +1,1 @@
+["FuseMul1_Softmax_ToFloat32_Dropout0", "FuseMatmulTransposeContiguousReshape"]

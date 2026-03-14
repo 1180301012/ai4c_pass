@@ -1,0 +1,1 @@
+["FuseConvFlattenTranspose_ViT_Embedding", "FuseConvFlattenTranspose_ViT_Embedding_14x14", "OptimizeTokenManipulation_ViT", "OptimizeLayerNorm_ViT", "OptimizeLayerNorm_ViT_1408", "EliminateZeroDropout_ViT"]

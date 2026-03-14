@@ -1,0 +1,1 @@
+["FuseConvReshapePermuteLayerNorm", "FuseConvReshapePermuteLayerNorm_B32_C64", "FuseConvReshapePermuteLayerNorm_B1_C320", "FuseConvReshapePermuteLayerNorm_B32_C320"]

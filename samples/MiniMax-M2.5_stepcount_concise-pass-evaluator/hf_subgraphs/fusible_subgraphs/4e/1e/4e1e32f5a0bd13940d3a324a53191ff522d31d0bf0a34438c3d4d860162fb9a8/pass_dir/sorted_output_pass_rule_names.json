@@ -1,0 +1,4 @@
+[
+    "FuseConv2d_MaxPool2d_stride1x1_padding1x1",
+    "FuseConv2d_MaxPool2d_stride2x2_padding3x3"
+]
