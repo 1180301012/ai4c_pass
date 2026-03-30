@@ -1,0 +1,14 @@
+[
+  "Conv1x1Stride1_K64_SliceFirst",
+  "Conv1x1Stride1_K128_SliceFirst",
+  "Conv1x1Stride1_K256_SliceFirst",
+  "Conv1x1Stride1_K512_SliceFirst",
+  "Conv1x1Stride1_K1024_SliceFirst",
+  "Conv1x1Stride1_K2048_SliceFirst",
+  "Conv1x1Stride1_K64_ConvFirst",
+  "Conv1x1Stride1_K256_ConvFirst",
+  "Conv1x1Stride2_K128_SliceFirst",
+  "Conv1x1Stride2_K512_SliceFirst",
+  "Conv1x1Stride2_K1024_SliceFirst",
+  "Conv1x1Stride2_K2048_SliceFirst"
+]

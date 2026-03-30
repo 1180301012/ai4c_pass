@@ -1,0 +1,5 @@
+[
+  "FuseEmbedAddLayerNorm_1024",
+  "FuseEmbedAddLayerNorm_768",
+  "FuseEmbedAddLayerNorm_16"
+]

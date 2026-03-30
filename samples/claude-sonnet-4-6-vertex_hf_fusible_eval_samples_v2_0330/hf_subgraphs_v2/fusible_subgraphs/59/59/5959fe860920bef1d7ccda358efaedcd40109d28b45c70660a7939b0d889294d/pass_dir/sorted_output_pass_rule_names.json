@@ -1,0 +1,1 @@
+["FuseAll_SmolLM3_bf16", "FuseAll_TinyLlama_fp32", "FuseRMSNorm_1e6_bf16", "FuseRMSNorm_1e5_fp32", "FuseRoPECosSin_bf16", "FuseRoPECosSin_fp32"]

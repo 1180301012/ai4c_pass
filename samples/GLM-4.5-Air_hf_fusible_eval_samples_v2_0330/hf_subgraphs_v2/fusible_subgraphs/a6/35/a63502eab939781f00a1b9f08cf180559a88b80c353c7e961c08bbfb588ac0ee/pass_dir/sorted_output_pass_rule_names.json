@@ -1,0 +1,1 @@
+["FuseRollViewLayerNorm_H64_W64_E384", "FuseRollViewLayerNorm_H32_W32_E768", "FuseRollViewPattern_H64_W64_E384", "FuseRollViewPattern_H32_W32_E768", "OptimizedLayerNorm", "OptimizedAddition"]

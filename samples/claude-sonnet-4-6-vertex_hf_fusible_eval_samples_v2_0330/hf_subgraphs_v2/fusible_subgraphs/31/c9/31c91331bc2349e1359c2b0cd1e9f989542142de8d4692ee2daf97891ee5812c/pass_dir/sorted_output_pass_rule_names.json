@@ -1,0 +1,1 @@
+["FuseGeluFlattenTransposeAdd", "FuseGeluAddLayerNorm_1_32_64_48", "FuseGeluAddLayerNorm_1_128_16_12", "FuseGeluAddLayerNorm_1_256_8_6"]

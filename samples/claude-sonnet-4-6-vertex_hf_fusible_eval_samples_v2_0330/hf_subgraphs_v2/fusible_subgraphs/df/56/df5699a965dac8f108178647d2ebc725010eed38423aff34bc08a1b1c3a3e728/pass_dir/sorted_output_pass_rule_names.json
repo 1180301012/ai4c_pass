@@ -1,0 +1,17 @@
+[
+  "FuseConvSigmoidMul",
+  "ChannelShuffle_B512_C20",
+  "ChannelShuffle_B512_C40",
+  "ChannelShuffle_B128_C20",
+  "ChannelShuffle_B128_C40",
+  "ChannelShuffle_B64_C20",
+  "ChannelShuffle_B64_C40",
+  "ChannelShuffle_B32_C20",
+  "ChannelShuffle_B32_C40",
+  "ChannelShuffle_B8_C20",
+  "ChannelShuffle_B8_C40",
+  "ChannelShuffle_B4_C20",
+  "ChannelShuffle_B4_C40",
+  "ChannelShuffle_B1_C20",
+  "ChannelShuffle_B1_C40"
+]
