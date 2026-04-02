@@ -1,0 +1,1 @@
+# This file is deprecated. Use FuseAttentionPatternGeneration_16x16.py and FuseAttentionPatternGeneration_8x8.py instead

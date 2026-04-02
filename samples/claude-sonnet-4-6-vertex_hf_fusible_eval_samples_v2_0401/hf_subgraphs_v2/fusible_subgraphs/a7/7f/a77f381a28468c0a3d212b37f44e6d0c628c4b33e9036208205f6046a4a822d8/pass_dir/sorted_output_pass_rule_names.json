@@ -1,0 +1,14 @@
+[
+  "Conv1x1_s1_sf_k2048",
+  "Conv1x1_s1_sf_k1024",
+  "Conv1x1_s1_sf_k512",
+  "Conv1x1_s1_sf_k256",
+  "Conv1x1_s1_sf_k128",
+  "Conv1x1_s1_sf_k64",
+  "Conv1x1_s2_sf_k2048",
+  "Conv1x1_s2_sf_k1024",
+  "Conv1x1_s2_sf_k512",
+  "Conv1x1_s2_sf_k128",
+  "Conv1x1_s1_fs_k256",
+  "Conv1x1_s1_fs_k64"
+]

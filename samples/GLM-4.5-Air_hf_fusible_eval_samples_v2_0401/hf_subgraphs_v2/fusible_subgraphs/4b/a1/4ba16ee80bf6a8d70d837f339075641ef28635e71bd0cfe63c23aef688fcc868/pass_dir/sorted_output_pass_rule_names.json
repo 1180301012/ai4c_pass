@@ -1,0 +1,1 @@
+["RemoveTrainingDropout", "FuseAdaptivePoolToGlobal", "OptimizeConcatenation"]

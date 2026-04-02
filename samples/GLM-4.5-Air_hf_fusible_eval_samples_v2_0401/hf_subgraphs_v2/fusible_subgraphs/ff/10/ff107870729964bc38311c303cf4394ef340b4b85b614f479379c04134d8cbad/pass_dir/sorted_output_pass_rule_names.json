@@ -1,0 +1,1 @@
+["OptimizeBatchNormReLUConvFusion", "RemoveRedundantTypeConversion", "OptimizeBilinearInterpolation"]

@@ -1,0 +1,69 @@
+"""
+Fuses:  0.22941573387056177 * in4 + padded  -> transpose(1,2)
+Matches graphs where K=19 (coat_tiny variants).
+"""
+import torch
+import triton
+import triton.language as tl
+
+_SCALE = 0.22941573387056177
+
+
+def pattern(in4, padded):
+    tmp8  = 0.22941573387056177 * in4
+    tmp9  = tmp8 + padded
+    tmp10 = tmp9.transpose(1, 2)
+    return tmp10
+
+
+def replacement_args(in4, padded):
+    return (in4, padded)
+
+
+@triton.jit
+def _fma_transpose_kernel(
+    in4_ptr, pad_ptr, out_ptr,
+    H, HW1, K,
+    stride_in4_h, stride_in4_i, stride_in4_k,
+    stride_pad_h, stride_pad_i, stride_pad_k,
+    stride_out_i, stride_out_h, stride_out_k,
+    SCALE: tl.constexpr,
+    BLOCK_K: tl.constexpr,
+):
+    pid = tl.program_id(0)
+    h   = pid % H
+    i   = pid // H
+    k   = tl.arange(0, BLOCK_K)
+    mask = k < K
+
+    in4_off = h * stride_in4_h + i * stride_in4_i + k * stride_in4_k
+    pad_off = h * stride_pad_h + i * stride_pad_i + k * stride_pad_k
+
+    in4_val = tl.load(in4_ptr + in4_off, mask=mask, other=0.0)
+    pad_val = tl.load(pad_ptr + pad_off, mask=mask, other=0.0)
+
+    result = SCALE * in4_val + pad_val
+
+    o_off = i * stride_out_i + h * stride_out_h + k * stride_out_k
+    tl.store(out_ptr + o_off, result, mask=mask)
+
+
+@torch.fx.wrap
+def fused_fma_transpose_K19(in4, padded):
+    B, H, HW1, K = in4.shape
+    out = torch.empty(B, HW1, H, K, dtype=in4.dtype, device=in4.device)
+    BLOCK_K = 32
+    grid = (H * HW1,)
+    _fma_transpose_kernel[grid](
+        in4, padded, out,
+        H, HW1, K,
+        in4.stride(1), in4.stride(2), in4.stride(3),
+        padded.stride(1), padded.stride(2), padded.stride(3),
+        out.stride(1), out.stride(2), out.stride(3),
+        SCALE=_SCALE, BLOCK_K=BLOCK_K,
+    )
+    return out
+
+
+def replacement_func():
+    return fused_fma_transpose_K19

@@ -1,0 +1,1 @@
+["FuseGeluAdd_Generic", "FuseGeluAddLayerNorm_C128_H16_W12", "FuseGeluAddLayerNorm_C32_H64_W48", "FuseGeluAddLayerNorm_C256_H8_W6", "FuseLayerNormView_C128_H16_W12", "FuseLayerNormView_C32_H64_W48", "FuseLayerNormView_C256_H8_W6"]

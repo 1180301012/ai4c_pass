@@ -1,0 +1,23 @@
+[
+  "AttnValueNocast_B1H2S512",
+  "AttnValueNocast_B1H4S12",
+  "AttnValueNocast_B4H4S512",
+  "AttnValueNocast_B8H12S256",
+  "AttnValueNocast_B8H2S256",
+  "AttnValueNocast_B4H2S512",
+  "AttnValueNocast_B64H12S128",
+  "AttnValueNocast_B1H8S64",
+  "AttnValueNocast_B64H4S128",
+  "AttnValueNocast_B1H4S64",
+  "AttnValueNocast_B1H12S64",
+  "AttnValueNocast_B64H2S128",
+  "AttnValueNocast_B1H2S11",
+  "AttnValueNocast_B1H2S64",
+  "AttnValueNocast_B1H2S12",
+  "AttnValueCastF16_B16H2S128",
+  "AttnValueCastBF16_B16H2S128",
+  "AttnValueCastF16_B1H4S12",
+  "AttnValueCastF16_B128H8S64",
+  "AttnValueCastBF16_B1H4S12",
+  "AttnValueCastF16_B1H2S12"
+]

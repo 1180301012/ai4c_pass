@@ -1,0 +1,17 @@
+[
+  "FuseConvSigmoidMul",
+  "ChannelShuffleA_N1",
+  "ChannelShuffleA_N4",
+  "ChannelShuffleA_N8",
+  "ChannelShuffleA_N32",
+  "ChannelShuffleA_N64",
+  "ChannelShuffleA_N128",
+  "ChannelShuffleA_N512",
+  "ChannelShuffleB_N1",
+  "ChannelShuffleB_N4",
+  "ChannelShuffleB_N8",
+  "ChannelShuffleB_N32",
+  "ChannelShuffleB_N64",
+  "ChannelShuffleB_N128",
+  "ChannelShuffleB_N512"
+]
