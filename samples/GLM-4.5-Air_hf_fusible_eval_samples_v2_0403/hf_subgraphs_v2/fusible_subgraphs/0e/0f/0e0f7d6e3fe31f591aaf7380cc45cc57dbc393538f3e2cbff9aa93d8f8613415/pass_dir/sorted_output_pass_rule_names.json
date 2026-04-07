@@ -1,0 +1,1 @@
+["FuseConv2dMaxPool_float16_cuda_stride1", "FuseConv2dMaxPool_float16_cuda_stride2", "FuseConv2dMaxPool_float32_cuda_stride1", "FuseConv2dMaxPool_float32_cuda_stride2", "FuseConv2dMaxPool_bfloat16_cuda_stride1", "FuseConv2dMaxPool_bfloat16_cuda_stride2"]

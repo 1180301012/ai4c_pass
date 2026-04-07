@@ -1,0 +1,1 @@
+["TestSimplePattern_pass", "FuseBatchNormReLUFusion_pass", "FuseConv2DAndView_pass", "FuseConvNormReLU_pass"]
