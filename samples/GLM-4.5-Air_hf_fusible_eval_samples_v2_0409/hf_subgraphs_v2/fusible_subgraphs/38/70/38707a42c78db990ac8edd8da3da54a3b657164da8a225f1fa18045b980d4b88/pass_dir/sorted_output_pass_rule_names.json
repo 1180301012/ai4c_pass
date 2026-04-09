@@ -1,0 +1,1 @@
+["OptimizeScalarSubtraction", "OptimizeSumDim1", "FuseSoftmaxMultiplyWithConstant"]

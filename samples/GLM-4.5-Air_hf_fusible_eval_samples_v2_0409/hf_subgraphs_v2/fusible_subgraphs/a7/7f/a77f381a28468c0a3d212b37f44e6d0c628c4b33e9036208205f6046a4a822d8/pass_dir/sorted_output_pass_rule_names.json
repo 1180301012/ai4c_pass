@@ -1,0 +1,1 @@
+["conv_slice_fusion_slice64", "conv_slice_fusion_slice128", "conv_slice_fusion_slice256", "conv_slice_fusion_slice512", "conv_slice_fusion_slice1024", "conv_slice_fusion_slice2048"]

@@ -1,0 +1,1 @@
+["FuseAddLayerNorm_1x578x384", "SimpleLinearTest", "FuseFirstElementLinear_1x384", "OptimizeView_1x1"]

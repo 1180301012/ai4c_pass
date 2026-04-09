@@ -1,0 +1,1 @@
+["OptimizeIndexingReshapePermuteContiguous", "FuseSigmoidScale", "FuseAdditionsWithBroadcast", "OptimizeSoftmaxDropout"]

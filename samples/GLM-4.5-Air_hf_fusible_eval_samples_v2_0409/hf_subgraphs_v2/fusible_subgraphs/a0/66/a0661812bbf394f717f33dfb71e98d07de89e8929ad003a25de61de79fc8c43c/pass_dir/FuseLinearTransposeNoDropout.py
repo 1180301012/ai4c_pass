@@ -1,0 +1,114 @@
+import torch
+import triton
+import triton.language as tl
+
+# Pattern matching function
+def pattern(in_0, in_1, in_2):
+    """Match linear + transpose pattern (no dropout)"""
+    linear = torch.nn.functional.linear(in_2, in_1, in_0)
+    tmp_3 = torch.nn.functional.dropout(linear, 0.0, False, False)
+    tmp_4 = tmp_3.transpose(1, 2)
+    return (tmp_3, tmp_4)
+
+# Argument extraction function
+def replacement_args(in_0, in_1, in_2):
+    return (in_0, in_1, in_2)
+
+# High-performance fused kernel
+@triton.jit
+def fused_linear_transpose_kernel(
+    bias_ptr,
+    weight_ptr,
+    input_ptr,
+    out_ptr,
+    transpose_out_ptr,
+    batch_size,
+    seq_len,
+    input_features,
+    output_features,
+    BLOCK_SIZE_M: tl.constexpr,
+    BLOCK_SIZE_N: tl.constexpr,
+    BLOCK_SIZE_K: tl.constexpr,
+):
+    # Calculate program IDs for batch and sequence dimensions
+    batch_id = tl.program_id(0)
+    seq_id = tl.program_id(1)
+    
+    # Calculate memory offsets
+    input_offset = batch_id * seq_len * input_features + seq_id * input_features
+    out_offset = batch_id * seq_len * output_features + seq_id * output_features
+    transpose_offset = batch_id * output_features * seq_len + seq_id
+    
+    # Load bias (shared across all sequence positions)
+    bias = tl.load(bias_ptr + tl.arange(0, output_features))
+    
+    # Process input features in blocks
+    for k in range(0, input_features, BLOCK_SIZE_K):
+        # Load input and weight blocks
+        input_start = input_offset + k
+        weight_start = k * output_features
+        
+        # Load input data
+        input_mask = (k + tl.arange(0, BLOCK_SIZE_K)) < input_features
+        input_data = tl.load(input_ptr + input_start + tl.arange(0, BLOCK_SIZE_K), 
+                           mask=input_mask, other=0.0)
+        
+        # Load weights
+        weight_mask = (k + tl.arange(0, BLOCK_SIZE_K)) < input_features
+        weights = tl.load(weight_ptr + weight_start + tl.arange(0, BLOCK_SIZE_K) * output_features,
+                        mask=weight_mask, other=0.0).to(tl.float32)
+        
+        # Matrix multiplication: output = input * weight^T
+        acc = tl.dot(input_data, weights)
+        
+        # Add bias
+        acc = acc + bias
+        
+        # Store results
+        store_mask = tl.arange(0, output_features) < output_features
+        tl.store(out_ptr + out_offset + tl.arange(0, output_features),
+                acc, mask=store_mask)
+        
+        # Store transpose result directly
+        tl.store(transpose_out_ptr + transpose_offset + tl.arange(0, output_features) * seq_len,
+                acc, mask=store_mask)
+
+# Kernel wrapper
+@torch.fx.wrap
+def fused_linear_transpose(in_0, in_1, in_2):
+    batch_size, seq_len, input_features = in_2.shape
+    output_features = in_0.shape[0]
+    
+    # Output shapes
+    linear_out = torch.empty(batch_size, seq_len, output_features, dtype=in_2.dtype, device=in_2.device)
+    transpose_out = torch.empty(batch_size, output_features, seq_len, dtype=in_2.dtype, device=in_2.device)
+    
+    # Optimized block sizes for no-dropout case
+    BLOCK_SIZE_M = 1  # One sequence element per program
+    BLOCK_SIZE_N = 128  # Output features per block
+    BLOCK_SIZE_K = 64   # Input features per block (larger for better performance)
+    
+    # Calculate grid dimensions
+    grid = (batch_size, seq_len)
+    
+    # Launch the fused kernel
+    fused_linear_transpose_kernel[grid](
+        bias_ptr=in_0,
+        weight_ptr=in_1,
+        input_ptr=in_2,
+        out_ptr=linear_out,
+        transpose_out_ptr=transpose_out,
+        batch_size=batch_size,
+        seq_len=seq_len,
+        input_features=input_features,
+        output_features=output_features,
+        BLOCK_SIZE_M=BLOCK_SIZE_M,
+        BLOCK_SIZE_N=BLOCK_SIZE_N,
+        BLOCK_SIZE_K=BLOCK_SIZE_K
+    )
+    
+    return linear_out, transpose_out
+
+# Replacement function
+def replacement_func():
+    return fused_linear_transpose
