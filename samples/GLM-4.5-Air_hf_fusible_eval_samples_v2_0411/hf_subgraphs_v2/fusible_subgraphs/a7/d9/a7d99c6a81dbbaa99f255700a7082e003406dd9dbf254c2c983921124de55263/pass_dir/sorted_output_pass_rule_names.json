@@ -1,0 +1,1 @@
+["SimpleContiguousOptimization", "FuseViewTransposeKey", "FuseViewTransposeLinear", "OptimizeContiguousOperations", "OptimizeSliceOperation"]

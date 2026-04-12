@@ -1,0 +1,1 @@
+["OptimizeDeviceTransfers", "FuseBatchNormReLUToMixedPrecision", "OptimizeTypeConversionAndConv2D", "OptimizeInterpolateBilinear"]

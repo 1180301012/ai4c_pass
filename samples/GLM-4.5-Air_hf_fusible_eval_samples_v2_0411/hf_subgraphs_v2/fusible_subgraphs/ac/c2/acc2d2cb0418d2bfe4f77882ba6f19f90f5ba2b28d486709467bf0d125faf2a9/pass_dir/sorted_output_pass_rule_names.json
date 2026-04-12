@@ -1,0 +1,1 @@
+["TestSimplePattern", "FusedBatchNormSiLU", "FusedParallelConv2DCat", "OptimizedMeanReduction"]
