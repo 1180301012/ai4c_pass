@@ -1,0 +1,1 @@
+["FuseMatmulReshape_bfloat16", "FuseMatmulReshape_128", "FuseMatmulReshape_384", "OptimizeTranspose_bfloat16", "FuseAllOperations_bfloat16"]
