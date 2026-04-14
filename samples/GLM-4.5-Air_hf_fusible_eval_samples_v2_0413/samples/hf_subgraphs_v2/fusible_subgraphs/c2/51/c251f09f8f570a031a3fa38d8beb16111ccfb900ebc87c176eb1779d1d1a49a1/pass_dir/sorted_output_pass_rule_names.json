@@ -1,0 +1,1 @@
+["OptimizeAttentionMask", "FuseMultipleEmbeddings", "FuseSequentialAdditions", "OptimizeLayerNorm"]

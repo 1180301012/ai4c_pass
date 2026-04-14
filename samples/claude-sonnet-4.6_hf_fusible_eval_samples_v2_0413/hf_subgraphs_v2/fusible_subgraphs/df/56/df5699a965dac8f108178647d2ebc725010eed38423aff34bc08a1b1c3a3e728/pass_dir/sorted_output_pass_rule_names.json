@@ -1,0 +1,1 @@
+["FusedGraph_B512", "FusedGraph_B128", "FusedGraph_B64", "FusedGraph_B32", "FusedGraph_B8", "FusedGraph_B4", "FusedGraph_B1", "FuseChannelShuffle2_B512", "FuseChannelShuffle2_B128", "FuseChannelShuffle2_B64", "FuseChannelShuffle2_B32", "FuseChannelShuffle2_B8", "FuseChannelShuffle2_B4", "FuseChannelShuffle2_B1"]

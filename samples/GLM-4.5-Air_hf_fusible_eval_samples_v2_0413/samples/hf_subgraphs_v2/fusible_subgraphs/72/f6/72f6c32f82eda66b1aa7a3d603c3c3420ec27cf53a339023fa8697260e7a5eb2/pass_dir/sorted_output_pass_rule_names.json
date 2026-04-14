@@ -1,0 +1,1 @@
+["FuseConv2DWithPadding", "OptimizeUnfoldOperations", "OptimizeReshapePermute", "OptimizeSplitTranspose"]

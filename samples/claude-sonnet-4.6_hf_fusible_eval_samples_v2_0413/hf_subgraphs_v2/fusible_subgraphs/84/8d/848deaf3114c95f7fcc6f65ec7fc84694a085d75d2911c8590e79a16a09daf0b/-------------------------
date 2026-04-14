@@ -1,0 +1,190 @@
+GEMM formulation (NCHW, B=1):
+  A = weight  [M=128, K=256]   stride (256, 1)
+  B = x       [K=256, N=1024]  stride (1024, 1)
+  out[m,n] = sum_k(A[m,k]*B[k,n]) + bias[m] + residual[m,n]
+
+Key insight: use BLOCK_K=256 (= full K) → no K-loop, single tl.dot call.
+This eliminates 8-iteration SMEM-pipeline overhead and maximises ILP.
+
+SMEM per block (num_stages=1):  (BM*BK + BK*BN) * sizeof(T)
+  fp32: (BM*256 + 256*BN)*4   fp16/bf16: half
+  BM=16,BN=64:   80 KB ✓  →  128 blocks (8×16)
+  BM=16,BN=128: 160 KB ✓  →   64 blocks (8×8)
+  BM=32,BN=64:   96 KB ✓  →   64 blocks (4×16)
+  BM=32,BN=128: 160 KB ✓  →   32 blocks (4×8)
+"""
+
+import torch
+import triton
+import triton.language as tl
+
+
+# ---------------------------------------------------------------------------
+# Pattern
+# ---------------------------------------------------------------------------
+def pattern(bias, weight, residual, x):
+    conv    = torch.conv2d(x, weight, bias, (1, 1), (0, 0), (1, 1), 1)
+    dropped = torch.nn.functional.dropout(conv, 0.0, False, False)
+    out     = dropped + residual
+    return out
+
+
+def replacement_args(bias, weight, residual, x):
+    return (bias, weight, residual, x)
+
+
+# ---------------------------------------------------------------------------
+# Triton GEMM kernel — fused with bias + residual add
+# Plain 2-D grid (no swizzle overhead).
+# ---------------------------------------------------------------------------
+@triton.autotune(
+    configs=[
+        # ── GROUP_M swizzle for L2 reuse; 1-D grid ────────────────────────────
+        # SMEM per block (num_stages=1): (BM*BK + BK*BN) * sizeof(T)
+        # fp32 limit: 164 KB = 167936 B;  fp16/bf16 limit: same, but sizeof=2
+
+        # ─ BLOCK_K=256: configs valid for fp32 (SMEM ≤ 160KB) ───────────────
+        triton.Config({'BLOCK_M': 16, 'BLOCK_N':  64, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),
+        triton.Config({'BLOCK_M': 16, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),
+        triton.Config({'BLOCK_M': 32, 'BLOCK_N':  64, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),
+        triton.Config({'BLOCK_M': 32, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),
+
+        # ─ BLOCK_K=256: overflow fp32 (skipped) but valid for fp16/bf16 ─────
+        # fp32 SMEM > 164KB → autotuner skips for fp32; fp16 SMEM ≤ 164KB ✓
+        triton.Config({'BLOCK_M':  64, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),   # fp16=96KB
+        triton.Config({'BLOCK_M':  64, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=8),
+        triton.Config({'BLOCK_M':  64, 'BLOCK_N': 256, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=8),   # fp16=160KB
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=8),   # fp16=128KB
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 128, 'BLOCK_K': 256, 'GROUP_M': 8}, num_stages=1, num_warps=4),
+
+        # ─ BLOCK_K=64 ───────────────────────────────────────────────────────
+        triton.Config({'BLOCK_M':  64, 'BLOCK_N': 128, 'BLOCK_K': 64, 'GROUP_M': 8}, num_stages=4, num_warps=4),
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 128, 'BLOCK_K': 64, 'GROUP_M': 8}, num_stages=2, num_warps=4),
+        triton.Config({'BLOCK_M':  64, 'BLOCK_N':  64, 'BLOCK_K': 64, 'GROUP_M': 8}, num_stages=4, num_warps=4),
+        # fp16-only (overflow fp32):
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 256, 'BLOCK_K': 64, 'GROUP_M': 8}, num_stages=2, num_warps=8),   # fp16=96KB
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 512, 'BLOCK_K': 64, 'GROUP_M': 4}, num_stages=1, num_warps=8),   # fp16=160KB
+
+        # ─ BLOCK_K=32 ───────────────────────────────────────────────────────
+        triton.Config({'BLOCK_M':  16, 'BLOCK_N':  64, 'BLOCK_K': 32, 'GROUP_M': 8}, num_stages=4, num_warps=2),
+        triton.Config({'BLOCK_M':  16, 'BLOCK_N': 128, 'BLOCK_K': 32, 'GROUP_M': 8}, num_stages=4, num_warps=4),
+        triton.Config({'BLOCK_M':  32, 'BLOCK_N': 128, 'BLOCK_K': 32, 'GROUP_M': 8}, num_stages=4, num_warps=4),
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 128, 'BLOCK_K': 32, 'GROUP_M': 8}, num_stages=4, num_warps=4),
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 256, 'BLOCK_K': 32, 'GROUP_M': 8}, num_stages=3, num_warps=8),
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N':1024, 'BLOCK_K': 32, 'GROUP_M': 1}, num_stages=1, num_warps=8),
+        # fp16-only (overflow fp32):
+        triton.Config({'BLOCK_M': 128, 'BLOCK_N': 512, 'BLOCK_K': 32, 'GROUP_M': 4}, num_stages=4, num_warps=8),   # fp16=160KB
+    ],
+    key=['M', 'N', 'K'],
+)
+@triton.jit
+def _fused_conv1x1_kernel(
+    a_ptr, b_ptr, bias_ptr, c_ptr, out_ptr,
+    M, N, K,
+    stride_am, stride_ak,
+    stride_bk, stride_bn,
+    stride_cm, stride_cn,
+    stride_om, stride_on,
+    BLOCK_M: tl.constexpr,
+    BLOCK_N: tl.constexpr,
+    BLOCK_K: tl.constexpr,
+    GROUP_M: tl.constexpr,
+):
+    """
+    out[m,n] = A[m,:] @ B[:,n] + bias[m] + C[m,n]
+    1-D grid with GROUP_M swizzle for L2 reuse.
+    When BLOCK_K == K the inner loop runs exactly once (no K-loop overhead).
+    """
+    pid       = tl.program_id(0)
+    num_pid_m = tl.cdiv(M, BLOCK_M)
+    num_pid_n = tl.cdiv(N, BLOCK_N)
+    num_pid_in_group = GROUP_M * num_pid_n
+    group_id     = pid // num_pid_in_group
+    first_pid_m  = group_id * GROUP_M
+    group_size_m = min(num_pid_m - first_pid_m, GROUP_M)
+    pid_m = first_pid_m + (pid % group_size_m)
+    pid_n = (pid % num_pid_in_group) // group_size_m
+
+    offs_m = pid_m * BLOCK_M + tl.arange(0, BLOCK_M)
+    offs_n = pid_n * BLOCK_N + tl.arange(0, BLOCK_N)
+    offs_k = tl.arange(0, BLOCK_K)
+
+    a_ptrs = a_ptr + offs_m[:, None] * stride_am + offs_k[None, :] * stride_ak
+    b_ptrs = b_ptr + offs_k[:, None] * stride_bk + offs_n[None, :] * stride_bn
+
+    acc = tl.zeros((BLOCK_M, BLOCK_N), dtype=tl.float32)
+
+    for _ in range(0, tl.cdiv(K, BLOCK_K)):
+        a    = tl.load(a_ptrs)
+        b    = tl.load(b_ptrs)
+        acc += tl.dot(a, b, out_dtype=tl.float32)
+        a_ptrs += BLOCK_K * stride_ak
+        b_ptrs += BLOCK_K * stride_bk
+
+    # fused bias
+    bias  = tl.load(bias_ptr + offs_m)
+    acc  += bias[:, None]
+
+    # fused residual
+    c_ptrs = c_ptr + offs_m[:, None] * stride_cm + offs_n[None, :] * stride_cn
+    acc   += tl.load(c_ptrs)
+
+    # store (auto-cast fp32 acc → target dtype)
+    out_ptrs = out_ptr + offs_m[:, None] * stride_om + offs_n[None, :] * stride_on
+    tl.store(out_ptrs, acc)
+
+
+# ---------------------------------------------------------------------------
+# Kernel wrapper
+# ---------------------------------------------------------------------------
+@torch.fx.wrap
+def fused_conv1x1_bias_residual(bias, weight, residual, x):
+    """
+    Fused 1x1-conv + bias + residual add.
+      bias     : [C_out]
+      weight   : [C_out, C_in, 1, 1]
+      residual : [B, C_out, H, W]
+      x        : [B, C_in,  H, W]
+    """
+    C_out = weight.shape[0]
+    C_in  = x.shape[1]
+    H     = x.shape[2]
+    W     = x.shape[3]
+    B     = x.shape[0]
+
+    M = C_out
+    N = B * H * W
+    K = C_in
+
+    out = torch.empty_like(residual)
+
+    stride_am = weight.stride(0)
+    stride_ak = weight.stride(1)
+    stride_bk = x.stride(1)
+    stride_bn = x.stride(3)
+    stride_cm = residual.stride(1)
+    stride_cn = residual.stride(3)
+    stride_om = out.stride(1)
+    stride_on = out.stride(3)
+
+    grid = lambda meta: (
+        triton.cdiv(M, meta['BLOCK_M']) * triton.cdiv(N, meta['BLOCK_N']),
+    )
+
+    _fused_conv1x1_kernel[grid](
+        weight, x, bias, residual, out,
+        M, N, K,
+        stride_am, stride_ak,
+        stride_bk, stride_bn,
+        stride_cm, stride_cn,
+        stride_om, stride_on,
+    )
+
+    return out
+
+
+# ---------------------------------------------------------------------------
+# replacement_func
+# ---------------------------------------------------------------------------
+def replacement_func():
+    return fused_conv1x1_bias_residual

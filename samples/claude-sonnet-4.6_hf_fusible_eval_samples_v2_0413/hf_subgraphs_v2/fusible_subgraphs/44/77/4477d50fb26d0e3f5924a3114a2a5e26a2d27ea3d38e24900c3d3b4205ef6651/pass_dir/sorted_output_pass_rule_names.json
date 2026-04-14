@@ -1,0 +1,19 @@
+[
+  "FuseConv1x1Sigmoid_d0_1_d2_4",
+  "FuseConv1x1Sigmoid_d0_1_d2_36",
+  "FuseConv1x1Sigmoid_d0_2_d2_1",
+  "FuseConv1x1Sigmoid_d0_2_d2_9",
+  "FuseConv1x1Sigmoid_d0_4_d2_9",
+  "FuseConv1x1Sigmoid_d0_6_d2_1",
+  "FuseConv1x1Sigmoid_d0_6_d2_4",
+  "FuseConv1x1Sigmoid_d0_8_d2_9",
+  "FuseConv1x1Sigmoid_d0_8_d2_36",
+  "FuseConv1x1Sigmoid_d0_12_d2_1",
+  "FuseConv1x1Sigmoid_d0_12_d2_4",
+  "FuseConv1x1Sigmoid_d0_12_d2_9",
+  "FuseConv1x1Sigmoid_d0_12_d2_36",
+  "FuseConv1x1Sigmoid_d0_16_d2_1",
+  "FuseConv1x1Sigmoid_d0_16_d2_9",
+  "FuseConv1x1Sigmoid_d0_24_d2_1",
+  "FuseConv1x1Sigmoid_d0_32_d2_1"
+]

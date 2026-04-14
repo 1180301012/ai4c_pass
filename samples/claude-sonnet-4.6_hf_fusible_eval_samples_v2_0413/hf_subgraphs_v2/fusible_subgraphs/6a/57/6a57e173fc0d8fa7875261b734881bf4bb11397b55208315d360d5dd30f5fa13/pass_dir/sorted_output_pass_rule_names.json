@@ -1,0 +1,9 @@
+[
+  "FuseConvAddPermute_g4_128_64_32",
+  "FuseConvAddPermute_g4_64_128_32",
+  "FuseConvAddPermute_g4_8_256_32",
+  "FuseConvAddPermute_g4_4_512_32",
+  "FuseConvAddPermute_g4_1_12_32",
+  "FuseConvAddPermute_g4_1_64_32",
+  "FuseConvAddPermute_g12_1_16_768"
+]

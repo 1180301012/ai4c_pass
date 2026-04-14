@@ -1,0 +1,10 @@
+[
+  "RoPE_q_H6_N256",
+  "RoPE_q_H12_N196",
+  "RoPE_q_H12_N256",
+  "RoPE_q_H16_N256",
+  "RoPE_k_H6_N256",
+  "RoPE_k_H12_N196",
+  "RoPE_k_H12_N256",
+  "RoPE_k_H16_N256"
+]

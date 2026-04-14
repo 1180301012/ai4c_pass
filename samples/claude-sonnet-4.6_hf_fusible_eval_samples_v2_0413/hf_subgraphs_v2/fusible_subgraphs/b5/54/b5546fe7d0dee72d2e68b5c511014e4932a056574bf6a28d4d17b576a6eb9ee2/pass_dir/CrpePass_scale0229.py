@@ -1,0 +1,70 @@
+"""
+Fuse: scale*in_4 + tmp_7(padded) + transpose(1,2)
+For scale = 0.22941573387056177 = 1/sqrt(19), C=19
+"""
+import torch
+import triton
+import triton.language as tl
+
+
+@triton.autotune(
+    configs=[
+        triton.Config({'BLOCK_C': 32}, num_warps=2),
+        triton.Config({'BLOCK_C': 32}, num_warps=4),
+        triton.Config({'BLOCK_C': 32}, num_warps=8),
+    ],
+    key=['C', 'Np1'],
+)
+@triton.jit
+def _crpe_sat_kernel_0229(
+    tmp7_ptr, in4_ptr, out_ptr,
+    C, Np1,
+    scale,
+    BLOCK_C: tl.constexpr,
+):
+    """
+    tmp7: [1, 8, N+1, C]   in4: [1, 8, N+1, C]   out: [1, N+1, 8, C]
+    """
+    s    = tl.program_id(0)   # 0 .. N+1-1
+    head = tl.program_id(1)   # 0 .. 7
+
+    c_off = tl.arange(0, BLOCK_C)
+    valid = c_off < C
+
+    base = head * Np1 * C + s * C
+
+    tmp7_v = tl.load(tmp7_ptr + base + c_off, mask=valid, other=0.0)
+    in4_v  = tl.load(in4_ptr  + base + c_off, mask=valid, other=0.0)
+
+    result = scale * in4_v + tmp7_v
+
+    out_base = s * 8 * C + head * C
+    tl.store(out_ptr + out_base + c_off, result, mask=valid)
+
+
+@torch.fx.wrap
+def crpe_sat_0229(tmp_7, in_4):
+    C   = tmp_7.shape[3]
+    Np1 = tmp_7.shape[2]          # N+1
+    out = torch.empty(1, Np1, 8, C, dtype=tmp_7.dtype, device=tmp_7.device)
+    _crpe_sat_kernel_0229[(Np1, 8)](
+        tmp_7, in_4, out, C, Np1, 0.22941573387056177,
+    )
+    return out
+
+
+# ── Pattern / replacement API ──────────────────────────────────────────────────
+
+def pattern(tmp_7, in_4):
+    tmp_8  = 0.22941573387056177 * in_4
+    tmp_9  = tmp_8 + tmp_7
+    tmp_10 = tmp_9.transpose(1, 2)
+    return tmp_10
+
+
+def replacement_args(tmp_7, in_4):
+    return (tmp_7, in_4)
+
+
+def replacement_func():
+    return crpe_sat_0229
