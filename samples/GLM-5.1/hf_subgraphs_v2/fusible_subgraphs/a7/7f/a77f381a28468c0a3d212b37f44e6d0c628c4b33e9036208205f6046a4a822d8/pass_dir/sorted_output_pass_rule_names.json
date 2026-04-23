@@ -1,0 +1,14 @@
+[
+    "FuseConv1x1Slice_stride2_slice2048_ordersf",
+    "FuseConv1x1Slice_stride2_slice128_ordersf",
+    "FuseConv1x1Slice_stride1_slice2048_ordersf",
+    "FuseConv1x1Slice_stride1_slice64_ordersf",
+    "FuseConv1x1Slice_stride1_slice256_ordercf",
+    "FuseConv1x1Slice_stride2_slice1024_ordersf",
+    "FuseConv1x1Slice_stride1_slice1024_ordersf",
+    "FuseConv1x1Slice_stride2_slice512_ordersf",
+    "FuseConv1x1Slice_stride1_slice512_ordersf",
+    "FuseConv1x1Slice_stride1_slice128_ordersf",
+    "FuseConv1x1Slice_stride1_slice64_ordercf",
+    "FuseConv1x1Slice_stride1_slice256_ordersf"
+]

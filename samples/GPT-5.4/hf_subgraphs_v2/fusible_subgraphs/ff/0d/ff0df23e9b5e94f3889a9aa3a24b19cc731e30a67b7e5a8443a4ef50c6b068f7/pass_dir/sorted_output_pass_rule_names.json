@@ -1,0 +1,5 @@
+[
+  "FuseEmbeddingPermuteExpandContiguous_b1_s45_cudaindex0",
+  "FuseEmbeddingPermuteExpandContiguous_b1_s11_cudaindex0",
+  "FuseEmbeddingPermuteExpandContiguous_b2_s7_cudadefault"
+]

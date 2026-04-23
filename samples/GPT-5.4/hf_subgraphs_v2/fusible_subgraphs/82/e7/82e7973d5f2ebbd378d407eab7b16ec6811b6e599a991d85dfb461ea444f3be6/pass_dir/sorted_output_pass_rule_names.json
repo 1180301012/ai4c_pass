@@ -1,0 +1,1 @@
+["FuseReluAddMeanDimNeg12Keepdim", "FuseReluAddMeanDim23Keepdim", "FuseReluAddMeanDimTuple23Keepdim", "FuseReluAddMeanDimTupleNeg12Keepdim", "FuseTensorReluAddAdaptiveAvgPool2d1", "FuseReluTensorAddAdaptiveAvgPool2d1", "FuseReluTensorAddReverseAdaptiveAvgPool2d1", "FuseReluAddAdaptiveAvgPool2d11", "FuseReluAddAdaptiveAvgPool2d1"]

@@ -1,0 +1,8 @@
+[
+  "TritonMaxPool2d3x3s2p1",
+  "TritonMaxPool2d3x3s2p1_PositionalTuple",
+  "TritonMaxPool2d3x3s2p1_Aten",
+  "TritonMaxPool2d3x3s2p1_Short",
+  "TritonMaxPool2dWithIndices3x3s2p1_GetItem0",
+  "TritonMaxPool2dWithIndices3x3s2p1_GetItem0_Tuple"
+]

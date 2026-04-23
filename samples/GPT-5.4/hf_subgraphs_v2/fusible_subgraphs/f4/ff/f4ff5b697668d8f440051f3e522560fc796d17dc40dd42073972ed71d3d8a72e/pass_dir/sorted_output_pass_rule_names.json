@@ -1,0 +1,12 @@
+[
+  "SoftmaxDim2_F",
+  "SoftmaxDim2_Method",
+  "SoftmaxDim2_Aten",
+  "SoftmaxDim2_AtenDtype",
+  "FuseSoftmaxAndSpatialExpectation",
+  "FuseSoftmaxAndSpatialExpectation_B4",
+  "FuseSoftmaxAndSpatialExpectation_B64",
+  "FuseSoftmaxAndSpatialExpectation_B128",
+  "FuseSoftmaxAndSpatialExpectation_B256",
+  "FuseSoftmaxAndSpatialExpectation_B512"
+]

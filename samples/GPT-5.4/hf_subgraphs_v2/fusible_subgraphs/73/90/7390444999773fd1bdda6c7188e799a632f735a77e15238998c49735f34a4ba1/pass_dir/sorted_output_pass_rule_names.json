@@ -1,0 +1,15 @@
+[
+  "FuseLinearViewTranspose_B1_H2",
+  "FuseLinearViewTranspose_B4_H2",
+  "FuseLinearViewTranspose_B8_H2",
+  "FuseLinearViewTranspose_B16_H2",
+  "FuseLinearViewTranspose_B64_H2",
+  "FuseLinearViewTranspose_B1_H4",
+  "FuseLinearViewTranspose_B4_H4",
+  "FuseLinearViewTranspose_B64_H4",
+  "FuseLinearViewTranspose_B1_H8",
+  "FuseLinearViewTranspose_B128_H8",
+  "FuseLinearViewTranspose_B1_H12",
+  "FuseLinearViewTranspose_B8_H12",
+  "FuseLinearViewTranspose_B64_H12"
+]

@@ -1,0 +1,5 @@
+[
+  "FuseMatmulTailTransposeReshape_bfloat16",
+  "FuseMatmulTailTransposeReshape_float16",
+  "FuseMatmulTailTransposeReshape_float32"
+]

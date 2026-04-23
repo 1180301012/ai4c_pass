@@ -1,0 +1,7 @@
+[
+    "conv2d_mean_stride1_g256",
+    "conv2d_mean_stride1_g384",
+    "conv2d_mean_stride1_g768",
+    "conv2d_mean_stride2_g256",
+    "conv2d_mean_stride2_g384"
+]

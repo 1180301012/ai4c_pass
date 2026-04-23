@@ -1,0 +1,15 @@
+import torch
+from pass_dir.shared_kernels import dispatch_wrapper
+
+
+def pattern(in_0 : torch.Tensor, in_1, in_4):
+    tmp_3 = torch.nn.functional.layer_norm(in_4, (768,), in_1, in_0, 1e-12)
+    return tmp_3
+
+
+def replacement_args(in_0 : torch.Tensor, in_1, in_4):
+    return (in_0, in_1, in_4, "route_768")
+
+
+def replacement_func():
+    return dispatch_wrapper

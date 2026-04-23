@@ -1,0 +1,1 @@
+["FuseConv1x1SoftmaxUnsqueeze_B4_S192_fp16", "FuseConv1x1SoftmaxUnsqueeze_B4_S192_aten_conv2d__view__softmax__unsqueeze", "FuseConv1x1SoftmaxUnsqueeze_B4_S192_aten_conv2d__reshape__softmax__unsqueeze"]

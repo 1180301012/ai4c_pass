@@ -1,0 +1,11 @@
+[
+  "FuseGeluOnly_Aten",
+  "FuseGeluOnly_ErfDecomp",
+  "FuseGeluOnly_Functional",
+  "FuseAtenGeluReshapePad_1_124_1536",
+  "FuseAtenGeluViewPad_1_124_1536",
+  "FuseErfGeluReshapeAtenPad_1_124_1536",
+  "FuseErfGeluViewPad_1_124_1536",
+  "FuseGeluApproxNoneReshapePad_1_124_1536",
+  "FuseGeluReshapePad_1_124_1536"
+]

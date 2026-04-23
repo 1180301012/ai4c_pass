@@ -1,0 +1,1 @@
+["FusedConv1dGeluSlice", "FusedAvgPoolSlice", "FusedAddTransposeLayerNorm"]

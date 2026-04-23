@@ -1,0 +1,5 @@
+[
+    "FuseMaxPoolInterpCatBNRelu_16ch",
+    "FuseMaxPoolInterpCatBNRelu_64ch",
+    "FuseMaxPoolInterpCatBNRelu_128ch"
+]

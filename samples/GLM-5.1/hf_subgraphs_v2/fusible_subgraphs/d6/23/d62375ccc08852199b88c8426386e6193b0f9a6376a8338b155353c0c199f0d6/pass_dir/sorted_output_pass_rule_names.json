@@ -1,0 +1,1 @@
+["FusedEmbedAddLayerNorm_fp32_1024", "FusedEmbedAddLayerNorm_fp16_2048", "FusedEmbedAddLayerNorm_bf16_1024"]

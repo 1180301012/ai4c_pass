@@ -1,0 +1,1 @@
+# This file is deprecated - use FuseSigmoidMul_view1.py, FuseSigmoidMul_view32.py, FuseSigmoidMul_view128.py

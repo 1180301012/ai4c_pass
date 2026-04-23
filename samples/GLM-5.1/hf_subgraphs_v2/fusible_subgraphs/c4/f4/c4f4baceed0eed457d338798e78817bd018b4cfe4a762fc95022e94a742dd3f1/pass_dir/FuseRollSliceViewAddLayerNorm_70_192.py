@@ -1,0 +1,26 @@
+import torch
+import triton
+import triton.language as tl
+import math
+
+# Import the shared kernel and wrapper functions
+from pass_dir.FuseRollSliceViewAddLayerNorm import fused_kernel_row, fused_kernel_wrapper_70_192
+
+# Pattern matching function - matches the 70x70/192 variant
+# Used by: float16/7 and bfloat16/9 graphs
+def pattern(in_0, in_1, in_2, in_3):
+    tmp_2 = in_3.contiguous()
+    tmp_3 = tmp_2.view(-1, 70, 70, 192)
+    tmp_4 = torch.roll(tmp_3, shifts=(3, 3), dims=(1, 2))
+    tmp_5 = tmp_4[(slice(None, None, None), slice(None, 64, None), slice(None, 64, None), slice(None, None, None))]
+    tmp_6 = tmp_5.contiguous()
+    tmp_7 = tmp_6.view(1, 4096, 192)
+    tmp_8 = in_2 + tmp_7
+    tmp_9 = torch.nn.functional.layer_norm(tmp_8, (192,), in_1, in_0, 1e-05)
+    return (tmp_8, tmp_9)
+
+def replacement_args(in_0, in_1, in_2, in_3):
+    return (in_0, in_1, in_2, in_3)
+
+def replacement_func():
+    return fused_kernel_wrapper_70_192

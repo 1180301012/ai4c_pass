@@ -1,0 +1,5 @@
+[
+  "FuseLinearDropout0Transpose_ReturnOrigTransposed",
+  "FuseLinearDropout005Transpose_ReturnOrigTransposed",
+  "FuseLinearDropoutTranspose_ReturnOrigTransposed"
+]

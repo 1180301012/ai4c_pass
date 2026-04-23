@@ -1,0 +1,9 @@
+[
+  "FuseDropoutFalseLayerNorm_H1024_return_x",
+  "FuseDropoutFalseLayerNorm_H1024_only_ln",
+  "FuseDropoutFalseLayerNorm_H768_return_x",
+  "FuseDropoutFalseLayerNorm_H768_only_ln",
+  "FuseDropoutFalseLayerNorm_H64_return_x",
+  "FuseDropoutFalseLayerNorm_H64_only_ln",
+  "FuseDropoutFalseLayerNorm_H32_only_ln"
+]

@@ -1,0 +1,1 @@
+["FuseConv1x1SigmoidUpsampleMul_Torch", "FuseConv1x1SigmoidUpsampleMul_Functional", "FuseConv1x1SigmoidUpsampleMul_MethodSigmoid", "FuseConv1x1SigmoidUpsampleMul_AtenInterp", "FuseConv1x1SigmoidMulOnly", "FuseSigmoidUpsampleMul_Torch", "FuseSigmoidUpsampleMul_AtenInterp", "FuseUpsampleMul_Torch", "FuseUpsampleMul_AtenInterp"]

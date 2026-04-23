@@ -1,0 +1,6 @@
+[
+  "FuseAdd3ThenMean_In1PlusIn2PlusIn0",
+  "FuseAdd3ThenMean_In0PlusIn1PlusIn2",
+  "FuseAdd2ThenMean_ZeroPlusIn1PlusIn0",
+  "FuseIdentityThenMean_HWKeepdim"
+]

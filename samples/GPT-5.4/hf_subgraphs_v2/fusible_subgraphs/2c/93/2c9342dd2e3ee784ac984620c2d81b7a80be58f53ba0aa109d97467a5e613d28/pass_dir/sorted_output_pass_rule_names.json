@@ -1,0 +1,7 @@
+[
+  "FuseConvCatSigmoidSubMul_B1",
+  "FuseConvCatSigmoidSubMul_B8",
+  "FuseConvCatSigmoidSubMul_B16",
+  "FuseConvCatSigmoidSubMul_B24",
+  "FuseConvCatSigmoidSubMul_B32"
+]
