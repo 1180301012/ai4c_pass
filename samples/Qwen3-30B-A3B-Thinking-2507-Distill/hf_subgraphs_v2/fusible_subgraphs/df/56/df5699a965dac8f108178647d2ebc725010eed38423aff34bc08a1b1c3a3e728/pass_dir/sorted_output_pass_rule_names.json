@@ -1,0 +1,10 @@
+[
+  "FusedSEAttentionAndChannelShuffle_B512_64x48",
+  "FusedSEAndChannelShuffle_512_32x24",
+  "FusedSEAndChannelShuffle_128_64x48",
+  "FusedSEAndChannelShuffle_64_64x48",
+  "FusedSEAndChannelShuffle_32_64x48",
+  "FusedSEAndChannelShuffle_8_64x48",
+  "FusedSEAndChannelShuffle_4_64x48",
+  "FusedSEAndChannelShuffle_1_64x48"
+]

@@ -1,0 +1,31 @@
+"""
+Pass: fused linear+view+transpose+SDPA+transpose+reshape
+with float16 cast on value tensor.
+Matches: float16/2 bert-tiny L-2-H-128, view(16,-1,2,64), reshape(16,128,128)
+"""
+import torch
+import triton
+import triton.language as tl
+import math
+from pass_dir.shared_fused_kernel import fused_linear_attn
+
+
+def pattern(in_0, in_1, in_2, in_3, in_4, in_5):
+    linear = torch.nn.functional.linear(in_3, in_1, in_0)
+    tmp_3 = linear.view(16, -1, 2, 64)
+    tmp_4 = tmp_3.transpose(1, 2)
+    to = tmp_4.to(torch.float16)
+    scaled_dot_product_attention = torch.nn.functional.scaled_dot_product_attention(
+        in_5, in_4, to, attn_mask=in_2, dropout_p=0.0, is_causal=False
+    )
+    tmp_6 = scaled_dot_product_attention.transpose(1, 2)
+    tmp_7 = tmp_6.reshape(16, 128, 128)
+    return tmp_7
+
+
+def replacement_args(in_0, in_1, in_2, in_3, in_4, in_5):
+    return (in_3, in_1, in_0, in_5, in_4, in_2)
+
+
+def replacement_func():
+    return fused_linear_attn

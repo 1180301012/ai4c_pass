@@ -1,0 +1,1 @@
+["FusePermuteContiguous_0_2_1_3", "FuseConvAddPermuteView_128_64_32", "FuseConvAddPermuteView_64_128_32", "FuseConvAddPermuteView_8_256_32", "FuseConvAddPermuteView_4_512_32", "FuseConvAddPermuteView_1_16_768", "FuseConvAddPermuteView_1_12_32", "FuseConvAddPermuteView_1_64_32"]

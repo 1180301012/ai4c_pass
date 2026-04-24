@@ -1,0 +1,19 @@
+[
+  "FusedAttn_B1H2D64_S512",
+  "FusedAttn_B1H4D64_S12",
+  "FusedAttn_B4H4D64_S512",
+  "FusedAttn_B16H2D64_S128_TF16",
+  "FusedAttn_B4H2D64_S512",
+  "FusedAttn_B16H2D64_S128_TBF16",
+  "FusedAttn_B8H12D64_S256",
+  "FusedAttn_B8H2D64_S256",
+  "FusedAttn_B128H8D64_S64",
+  "FusedAttn_B64H12D64_S128",
+  "FusedAttn_B1H8D64_S64",
+  "FusedAttn_B64H4D64_S128",
+  "FusedAttn_B1H4D64_S64",
+  "FusedAttn_B1H12D64_S64",
+  "FusedAttn_B1H2D64_S12",
+  "FusedAttn_B64H2D64_S128",
+  "FusedAttn_B1H2D64_S11"
+]

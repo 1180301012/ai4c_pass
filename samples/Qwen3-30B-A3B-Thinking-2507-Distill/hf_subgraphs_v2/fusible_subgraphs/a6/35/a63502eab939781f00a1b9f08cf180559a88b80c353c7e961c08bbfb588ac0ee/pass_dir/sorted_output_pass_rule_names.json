@@ -1,0 +1,6 @@
+[
+  "FuseViewRollLnAdd_32x32x768_fp16",
+  "FuseViewRollLnAdd_32x32x768_bf16",
+  "FuseViewRollLnAdd_64x64x384_fp16",
+  "FuseViewRollLnAdd_64x64x384_bf16"
+]

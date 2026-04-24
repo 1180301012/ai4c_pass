@@ -1,0 +1,8 @@
+[
+  "DepthwiseConvMean_stride1_groups384",
+  "DepthwiseConvMean_stride2_groups384",
+  "DepthwiseConvMean_stride1_groups768",
+  "DepthwiseConvMean_stride2_groups256",
+  "DepthwiseConvMean_stride1_groups256",
+  "MeanHW_keepdim"
+]

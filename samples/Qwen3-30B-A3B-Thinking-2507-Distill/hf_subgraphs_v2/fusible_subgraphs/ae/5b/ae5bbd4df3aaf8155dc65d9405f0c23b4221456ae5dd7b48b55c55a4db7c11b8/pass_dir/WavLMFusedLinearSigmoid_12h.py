@@ -1,0 +1,48 @@
+"""
+Pass: FuseLinearSigmoidChunk_12h
+
+Matches the WavLM relative-position computation subgraph for 12 heads:
+  linear(in_3[1,12,199,64], in_1[8,64], in_0[8])
+  → view(1,12,199,2,4) → sum(-1) → sigmoid → chunk(2,dim=-1)
+  → (chunk[1]*in_2 - 1) * chunk[0] + 2  → view(1,12,-1,1)
+
+Replaces with a single Triton kernel that fuses linear + sum + sigmoid
++ chunk arithmetic, avoiding materialization of the [1,12,199,8] intermediate.
+"""
+
+import torch
+from pass_dir.wavlm_fused_kernel import fused_wavlm_linear_sigmoid
+
+
+# ---------------------------------------------------------------------------
+# Pattern: mirrors model.py forward() exactly (no None-cleanup lines)
+# ---------------------------------------------------------------------------
+def pattern(in_0, in_1, in_2, in_3):
+    linear = torch.nn.functional.linear(in_3, in_1, in_0)
+    tmp_4 = linear.view(1, 12, 199, 2, 4)
+    tmp_5 = tmp_4.sum(-1, keepdim=False)
+    tmp_6 = torch.sigmoid(tmp_5)
+    chunk = tmp_6.chunk(2, dim=-1)
+    tmp_8 = chunk[0]
+    tmp_9 = chunk[1]
+    tmp_10 = tmp_9 * in_2
+    tmp_11 = tmp_10 - 1.0
+    tmp_12 = tmp_8 * tmp_11
+    tmp_13 = tmp_12 + 2.0
+    tmp_14 = tmp_13.view(1, 12, -1, 1)
+    return tmp_14
+
+
+# ---------------------------------------------------------------------------
+# replacement_args: pass all four inputs unchanged to the kernel wrapper
+# ---------------------------------------------------------------------------
+def replacement_args(in_0, in_1, in_2, in_3):
+    return (in_0, in_1, in_2, in_3)
+
+
+# ---------------------------------------------------------------------------
+# replacement_func: return the shared fused kernel wrapper (identical object
+# imported from wavlm_fused_kernel.py)
+# ---------------------------------------------------------------------------
+def replacement_func():
+    return fused_wavlm_linear_sigmoid
