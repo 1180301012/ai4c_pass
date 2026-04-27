@@ -1,0 +1,19 @@
+[
+  "LinViewT_1_2_64",
+  "LinViewT_4_2_64",
+  "LinViewT_8_2_64",
+  "LinViewT_64_2_64",
+  "LinViewT_1_4_64",
+  "LinViewT_4_4_64",
+  "LinViewT_64_4_64",
+  "LinViewT_1_8_64",
+  "LinViewT_1_12_64",
+  "LinViewT_8_12_64",
+  "LinViewT_64_12_64",
+  "LinViewT_16_2_64_fp16",
+  "LinViewT_1_2_64_fp16",
+  "LinViewT_1_4_64_fp16",
+  "LinViewT_128_8_64_fp16",
+  "LinViewT_16_2_64_bf16",
+  "LinViewT_1_4_64_bf16"
+]

@@ -1,0 +1,5 @@
+[
+  "FuseSigmoidMul",
+  "FuseChannelShuffleSmall_B512",
+  "FuseChannelShuffleLarge_B512"
+]

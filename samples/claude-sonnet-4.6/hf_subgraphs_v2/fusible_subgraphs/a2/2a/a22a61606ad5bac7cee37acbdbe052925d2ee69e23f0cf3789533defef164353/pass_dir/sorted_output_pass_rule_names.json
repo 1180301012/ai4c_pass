@@ -1,0 +1,6 @@
+[
+  "FuseLayerNorm_1024",
+  "FuseLayerNorm_768",
+  "FuseLayerNorm_64",
+  "FuseLayerNorm_32"
+]
