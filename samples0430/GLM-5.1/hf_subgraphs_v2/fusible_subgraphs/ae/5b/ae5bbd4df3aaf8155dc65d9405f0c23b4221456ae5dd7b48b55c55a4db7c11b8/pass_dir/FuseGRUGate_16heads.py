@@ -1,0 +1,26 @@
+import torch
+from pass_dir.gru_kernel import gru_gate_dispatch
+
+
+def pattern(in_0, in_1, in_2, in_3):
+    linear = torch.nn.functional.linear(in_3, in_1, in_0)
+    tmp_4 = linear.view(1, 16, 199, 2, 4)
+    tmp_5 = tmp_4.sum(-1, keepdim=False)
+    tmp_6 = torch.sigmoid(tmp_5)
+    chunk = tmp_6.chunk(2, dim=-1)
+    tmp_8 = chunk[0]
+    tmp_9 = chunk[1]
+    tmp_10 = tmp_9 * in_2
+    tmp_11 = tmp_10 - 1.0
+    tmp_12 = tmp_8 * tmp_11
+    tmp_13 = tmp_12 + 2.0
+    tmp_14 = tmp_13.view(1, 16, -1, 1)
+    return (tmp_14,)
+
+
+def replacement_args(in_0, in_1, in_2, in_3):
+    return (in_0, in_1, in_2, in_3, "16heads")
+
+
+def replacement_func():
+    return gru_gate_dispatch

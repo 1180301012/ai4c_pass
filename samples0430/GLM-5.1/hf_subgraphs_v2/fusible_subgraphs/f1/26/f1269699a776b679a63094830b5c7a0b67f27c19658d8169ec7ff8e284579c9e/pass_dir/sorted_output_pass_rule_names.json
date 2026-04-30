@@ -1,0 +1,7 @@
+[
+    "FuseMPNetEmbeddings_bf16_768_11",
+    "FuseMPNetEmbeddings_bf16_64_45",
+    "FuseMPNetEmbeddings_f16_768_7",
+    "FuseMPNetEmbeddings_f32_768_7",
+    "FuseMPNetEmbeddings_f16_64_45"
+]

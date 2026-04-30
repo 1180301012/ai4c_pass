@@ -1,0 +1,8 @@
+[
+    "FuseLinearPermuteReshapeInterpolate_float32_b2",
+    "FuseLinearPermuteReshapeInterpolate_float32_b64",
+    "FuseLinearPermuteReshapeInterpolate_bfloat16_b12",
+    "FuseLinearPermuteReshapeInterpolate_bfloat16_b24",
+    "FuseLinearPermuteReshapeInterpolate_float16_b8",
+    "FuseLinearPermuteReshapeInterpolate_float16_b64"
+]

@@ -1,0 +1,8 @@
+[
+    "FuseConv2dGeluDropout_g128",
+    "FuseConv2dGeluDropout_g256",
+    "FuseConv2dGeluDropout_g512",
+    "FuseConv2dGeluDropout_g1024",
+    "FuseConv2dGeluDropout_g2048",
+    "FuseConv2dGeluDropout_pw1x1"
+]

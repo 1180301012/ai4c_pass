@@ -1,0 +1,1 @@
+["FuseConvBN_1x1_pad0", "TritonBN", "TritonAvgPool2D"]

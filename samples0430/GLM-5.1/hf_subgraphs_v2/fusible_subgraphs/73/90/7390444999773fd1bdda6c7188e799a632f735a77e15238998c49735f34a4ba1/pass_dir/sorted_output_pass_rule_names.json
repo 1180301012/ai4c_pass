@@ -1,0 +1,19 @@
+[
+  "FuseLinearViewTranspose_1_2_64_no_cast",
+  "FuseLinearViewTranspose_1_4_64_no_cast",
+  "FuseLinearViewTranspose_4_4_64_no_cast",
+  "FuseLinearViewTranspose_8_12_64_no_cast",
+  "FuseLinearViewTranspose_8_2_64_no_cast",
+  "FuseLinearViewTranspose_4_2_64_no_cast",
+  "FuseLinearViewTranspose_64_12_64_no_cast",
+  "FuseLinearViewTranspose_1_8_64_no_cast",
+  "FuseLinearViewTranspose_64_4_64_no_cast",
+  "FuseLinearViewTranspose_1_12_64_no_cast",
+  "FuseLinearViewTranspose_64_2_64_no_cast",
+  "FuseLinearViewTranspose_16_2_64_cast_float16",
+  "FuseLinearViewTranspose_16_2_64_cast_bfloat16",
+  "FuseLinearViewTranspose_1_4_64_cast_float16",
+  "FuseLinearViewTranspose_1_4_64_cast_bfloat16",
+  "FuseLinearViewTranspose_128_8_64_cast_float16",
+  "FuseLinearViewTranspose_1_2_64_cast_float16"
+]
