@@ -1,0 +1,10 @@
+[
+    "FuseConv2dSlice",
+    "FuseConv2dSlice_s1_64",
+    "FuseConv2dSlice_s1_256",
+    "FuseConv2dSlice_s1_512",
+    "FuseConv2dSlice_s1_1024",
+    "FuseConv2dSlice_s2_512",
+    "FuseConv2dSlice_s2_1024",
+    "FuseConv2dSlice_s2_2048"
+]

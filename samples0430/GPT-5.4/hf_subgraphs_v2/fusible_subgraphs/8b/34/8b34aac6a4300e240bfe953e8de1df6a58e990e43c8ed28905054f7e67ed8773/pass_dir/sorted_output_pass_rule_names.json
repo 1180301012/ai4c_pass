@@ -1,0 +1,1 @@
+["FusePostConvBilinearSigmoidMulAdd_BiSeNetV2", "FusePostConvBilinearSigmoidMulAdd_BiSeNetV2_Aten", "FuseInterpSigmoidMul_BiSeNetV2", "FuseInterpSigmoidMul_BiSeNetV2_Aten", "FuseConvSigmoidMul_BiSeNetV2", "FuseConvSigmoidMul_BiSeNetV2_Aten"]

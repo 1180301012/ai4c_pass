@@ -1,0 +1,139 @@
+import torch
+import triton
+import triton.language as tl
+
+_DEBUG_PRINTED = False
+try:
+    import graph_net_bench.torch.backend.pass_mgr_backend as _pmb
+    _orig_call = _pmb.PatternReplacementPass.__call__
+    def _debug_call(self, gm):
+        global _DEBUG_PRINTED
+        if not _DEBUG_PRINTED:
+            print('DEBUG_GM_GRAPH_START')
+            print(gm.graph)
+            print('DEBUG_GM_GRAPH_END')
+            _DEBUG_PRINTED = True
+        return _orig_call(self, gm)
+    _pmb.PatternReplacementPass.__call__ = _debug_call
+except Exception:
+    pass
+
+
+
+def pattern(in_0, in_1, in_2):
+    tmp_2 = torch.nn.functional.relu(in_2, inplace=False)
+    tmp_3 = in_1 * tmp_2
+    tmp_4 = tmp_3 + in_0
+    tmp_5 = torch.nn.functional.pad(tmp_4, (0, 1, 0, 1), 'constant', None)
+    return tmp_5
+
+
+def replacement_args(in_0, in_1, in_2):
+    return (in_0, in_1, in_2)
+
+
+@triton.autotune(
+    configs=[
+        triton.Config({'BLOCK_H': 8, 'BLOCK_W': 64}, num_warps=4, num_stages=2),
+        triton.Config({'BLOCK_H': 8, 'BLOCK_W': 128}, num_warps=4, num_stages=2),
+        triton.Config({'BLOCK_H': 16, 'BLOCK_W': 64}, num_warps=4, num_stages=2),
+        triton.Config({'BLOCK_H': 16, 'BLOCK_W': 128}, num_warps=8, num_stages=2),
+        triton.Config({'BLOCK_H': 32, 'BLOCK_W': 64}, num_warps=8, num_stages=2),
+    ],
+    key=['H', 'W'],
+)
+@triton.jit
+
+def fused_relu_scale_bias_pad2d_kernel(
+    x_ptr,
+    scale_ptr,
+    bias_ptr,
+    out_ptr,
+    N,
+    C,
+    H,
+    W,
+    stride_xn,
+    stride_xc,
+    stride_xh,
+    stride_xw,
+    stride_on,
+    stride_oc,
+    stride_oh,
+    stride_ow,
+    BLOCK_H: tl.constexpr,
+    BLOCK_W: tl.constexpr,
+):
+    pid_w = tl.program_id(0)
+    pid_h = tl.program_id(1)
+    pid_nc = tl.program_id(2)
+
+    n = pid_nc // C
+    c = pid_nc - n * C
+
+    offs_h = pid_h * BLOCK_H + tl.arange(0, BLOCK_H)
+    offs_w = pid_w * BLOCK_W + tl.arange(0, BLOCK_W)
+
+    mask_out = (offs_h[:, None] < (H + 1)) & (offs_w[None, :] < (W + 1))
+    mask_in = (offs_h[:, None] < H) & (offs_w[None, :] < W)
+
+    x_ptrs = (
+        x_ptr
+        + n * stride_xn
+        + c * stride_xc
+        + offs_h[:, None] * stride_xh
+        + offs_w[None, :] * stride_xw
+    )
+    x = tl.load(x_ptrs, mask=mask_in, other=0.0)
+
+    scale = tl.load(scale_ptr)
+    bias = tl.load(bias_ptr)
+
+    relu_x = tl.where(x > 0, x, 0.0)
+    y = relu_x * scale + bias
+    out_val = tl.where(mask_in, y, 0.0)
+
+    out_ptrs = (
+        out_ptr
+        + n * stride_on
+        + c * stride_oc
+        + offs_h[:, None] * stride_oh
+        + offs_w[None, :] * stride_ow
+    )
+    tl.store(out_ptrs, out_val, mask=mask_out)
+
+
+@torch.fx.wrap
+def fused_relu_scale_bias_pad2d(in_0, in_1, in_2):
+    n, c, h, w = in_2.shape
+    out = torch.empty((n, c, h + 1, w + 1), device=in_2.device, dtype=in_2.dtype)
+
+    grid = lambda meta: (
+        triton.cdiv(w + 1, meta['BLOCK_W']),
+        triton.cdiv(h + 1, meta['BLOCK_H']),
+        n * c,
+    )
+
+    fused_relu_scale_bias_pad2d_kernel[grid](
+        in_2,
+        in_1,
+        in_0,
+        out,
+        n,
+        c,
+        h,
+        w,
+        in_2.stride(0),
+        in_2.stride(1),
+        in_2.stride(2),
+        in_2.stride(3),
+        out.stride(0),
+        out.stride(1),
+        out.stride(2),
+        out.stride(3),
+    )
+    return out
+
+
+def replacement_func():
+    return fused_relu_scale_bias_pad2d

@@ -1,0 +1,14 @@
+[
+  "Conv1x1Slice64_ReturnSliceFull",
+  "Conv1x1Slice64_ReturnFullSlice",
+  "Conv1x1Slice128_ReturnSliceFull",
+  "Conv1x1Slice256_ReturnSliceFull",
+  "Conv1x1Slice256_ReturnFullSlice",
+  "Conv1x1Slice512_ReturnSliceFull",
+  "Conv1x1Slice1024_ReturnSliceFull",
+  "Conv1x1Slice2048_ReturnSliceFull",
+  "Conv2x2Slice128_ReturnSliceFull",
+  "Conv2x2Slice512_ReturnSliceFull",
+  "Conv2x2Slice1024_ReturnSliceFull",
+  "Conv2x2Slice2048_ReturnSliceFull"
+]

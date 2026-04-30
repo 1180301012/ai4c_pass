@@ -1,0 +1,1 @@
+["FuseLayoutLMEmbeddingsAddLayerNorm_Seq11", "FuseLayoutLMEmbeddingsAddLayerNorm_64", "FuseLayoutLMEmbeddingsAddLayerNorm_128", "FuseLayoutLMEmbeddingsAddLayerNorm_256", "FuseAttentionMaskToFloatNegInf"]

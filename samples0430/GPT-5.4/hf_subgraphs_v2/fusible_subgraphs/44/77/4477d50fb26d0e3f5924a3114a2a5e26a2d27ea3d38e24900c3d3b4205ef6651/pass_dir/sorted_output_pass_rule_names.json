@@ -1,0 +1,18 @@
+[
+  "FuseConv1x1PermuteReshapeSigmoid_b1_oc4",
+  "FuseConv1x1PermuteReshapeSigmoid_b6_oc4",
+  "FuseConv1x1PermuteReshapeSigmoid_b2_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b6_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b12_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b32_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b8_oc9",
+  "FuseConv1x1PermuteReshapeSigmoid_b8_oc36",
+  "FuseConv1x1PermuteReshapeSigmoid_b16_oc9",
+  "FuseConv1x1PermuteReshapeSigmoid_b16_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b4_oc9",
+  "FuseConv1x1PermuteReshapeSigmoid_b24_oc1",
+  "FuseConv1x1PermuteReshapeSigmoid_b1_oc36",
+  "FuseConv1x1PermuteReshapeSigmoid_b12_oc36",
+  "FuseConv1x1PermuteReshapeSigmoid_b12_oc9",
+  "FuseConv1x1PermuteReshapeSigmoid_b12_oc4"
+]

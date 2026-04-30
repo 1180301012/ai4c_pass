@@ -1,0 +1,1 @@
+["JustConv2d", "SimpleConv2dPadFusion", "FuseConv2dPadUnfold_384ch", "FuseConv2dPadUnfoldReshapePermuteSplit", "FuseFullAttentionComputation"]

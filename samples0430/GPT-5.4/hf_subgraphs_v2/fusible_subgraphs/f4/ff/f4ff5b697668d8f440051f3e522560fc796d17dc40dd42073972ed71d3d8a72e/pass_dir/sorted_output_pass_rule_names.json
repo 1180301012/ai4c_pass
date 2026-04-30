@@ -1,0 +1,8 @@
+[
+  "FuseSoftmaxExpectation_N1",
+  "FuseSoftmaxExpectation_N4",
+  "FuseSoftmaxExpectation_N64",
+  "FuseSoftmaxExpectation_N128",
+  "FuseSoftmaxExpectation_N256",
+  "FuseSoftmaxExpectation_N512"
+]

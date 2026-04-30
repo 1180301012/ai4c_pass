@@ -1,0 +1,8 @@
+[
+  "MatchFull_ConvSigmoidInterpolateMul",
+  "MatchSigmoidInterpolateMul",
+  "MatchInterpolateMul",
+  "MatchConvSigmoid",
+  "MatchInterpolateOnly",
+  "MatchSigmoidOnly"
+]

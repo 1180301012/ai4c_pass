@@ -1,0 +1,13 @@
+[
+  "FuseReluAddAdaptiveAvgPool2d1",
+  "FuseReluAddAdaptiveAvgPool2d1_tuple",
+  "FuseReluAddAdaptiveAvgPool2d1_alt",
+  "FuseReluAddAdaptiveAvgPool2d1_alt_tuple",
+  "FuseAddAdaptiveAvgPool2d1",
+  "FuseAddAdaptiveAvgPool2d1_tuple",
+  "FuseTorchAddAdaptiveAvgPool2d1",
+  "FuseReluAdd_only",
+  "FuseReluAdd_only_alt",
+  "FuseAdaptiveAvgPool2d1_only",
+  "FuseAdaptiveAvgPool2d1_only_tuple"
+]

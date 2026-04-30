@@ -1,0 +1,6 @@
+[
+  "FuseConv1x1SpatialSoftmax_B1",
+  "FuseConv1x1SpatialSoftmax_B4",
+  "FuseConv1x1SpatialSoftmax_B24",
+  "FuseConv1x1SpatialSoftmax_B32"
+]

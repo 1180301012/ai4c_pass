@@ -1,0 +1,5 @@
+[
+    "FusedAttentionScaleAddSoftmaxMatmul",
+    "FusedAttentionScaleAddSoftmaxMatmul_Heads2",
+    "FusedAttentionScaleAddSoftmaxMatmul_Scale2_828"
+]

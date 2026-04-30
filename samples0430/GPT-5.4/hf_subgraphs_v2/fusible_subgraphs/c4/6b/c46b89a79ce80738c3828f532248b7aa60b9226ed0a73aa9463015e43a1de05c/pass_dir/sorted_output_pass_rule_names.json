@@ -1,0 +1,7 @@
+[
+  "FuseDepthProPatchExtractionCatToFP16",
+  "FuseDepthProPatchExtractionCatToFP16Tuple",
+  "FuseDepthProUnfoldPermuteReshapeLargeToFP16",
+  "FuseDepthProUnfoldPermuteReshapeSmallToFP16",
+  "FuseDepthProCatCastToFP16"
+]

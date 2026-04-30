@@ -1,0 +1,7 @@
+[
+  "FuseAttentionMatmulsSoftmaxPermuteView",
+  "FuseAttentionScale8Drop0PermuteContiguous",
+  "FuseAttentionScale6Drop0PermuteContiguous",
+  "FuseAttentionScale6928203Drop01PermuteContiguous",
+  "FuseAttentionScale6Drop01PermuteContiguous"
+]

@@ -1,0 +1,17 @@
+[
+  "FuseSdpaOutputTransposeReshape_B1_S512_D128",
+  "FuseSdpaOutputTransposeReshape_B1_S12_D256",
+  "FuseSdpaOutputTransposeReshape_B4_S512_D256",
+  "FuseSdpaOutputTransposeReshape_B16_S128_D128",
+  "FuseSdpaOutputTransposeReshape_B8_S256_D768",
+  "FuseSdpaOutputTransposeReshape_B8_S256_D128",
+  "FuseSdpaOutputTransposeReshape_B128_S64_D512",
+  "FuseSdpaOutputTransposeReshape_B64_S128_D768",
+  "FuseSdpaOutputTransposeReshape_B1_S64_D512",
+  "FuseSdpaOutputTransposeReshape_B64_S128_D256",
+  "FuseSdpaOutputTransposeReshape_B1_S64_D256",
+  "FuseSdpaOutputTransposeReshape_B1_S12_D128",
+  "FuseSdpaOutputTransposeReshape_B64_S128_D128",
+  "FuseSdpaOutputTransposeReshape_B1_S11_D128",
+  "FuseSdpaOutputTransposeReshape_B1_S64_D128"
+]

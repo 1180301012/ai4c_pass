@@ -1,0 +1,8 @@
+[
+  "FuseDepthwise3x3GeluDropout_g128",
+  "FuseDepthwise3x3GeluDropout_g256",
+  "FuseDepthwise3x3GeluDropout_g512",
+  "FuseDepthwise3x3GeluDropout_g1024",
+  "FuseDepthwise3x3GeluDropout_g2048",
+  "FusePointwise1x1GeluDropout"
+]

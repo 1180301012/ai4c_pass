@@ -1,0 +1,8 @@
+[
+    "FusedBatchNormSlice",
+    "FusedBatchNormSlice_128", 
+    "FusedBatchNormSlice_256",
+    "FusedBatchNormSlice_512",
+    "FusedBatchNormSlice_1024",
+    "FusedBatchNormSlice_2048"
+]
