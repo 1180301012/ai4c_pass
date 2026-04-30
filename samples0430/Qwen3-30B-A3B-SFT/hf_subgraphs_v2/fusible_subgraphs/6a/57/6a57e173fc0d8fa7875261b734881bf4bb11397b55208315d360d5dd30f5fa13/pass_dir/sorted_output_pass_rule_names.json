@@ -1,0 +1,9 @@
+[
+  "FuseConvPermuteView_128_64_32",
+  "FuseConvPermuteView_64_128_32",
+  "FuseConvPermuteView_8_256_32",
+  "FuseConvPermuteView_4_512_32",
+  "FuseConvPermuteView_1_16_768",
+  "FuseConvPermuteView_1_12_32",
+  "FuseConvPermuteView_1_64_32"
+]

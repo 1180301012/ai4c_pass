@@ -1,0 +1,9 @@
+[
+  "FuseChannelShuffle_B1",
+  "FuseChannelShuffle_B4",
+  "FuseChannelShuffle_B8",
+  "FuseChannelShuffle_B32",
+  "FuseChannelShuffle_B64",
+  "FuseChannelShuffle_B128",
+  "FuseChannelShuffle_B512"
+]

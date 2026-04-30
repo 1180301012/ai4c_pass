@@ -1,0 +1,1 @@
+["FuseMatmulTransposeReshape_bf16", "FuseMatmulTransposeReshape_fp16", "FuseMatmulTransposeReshape_fp32"]

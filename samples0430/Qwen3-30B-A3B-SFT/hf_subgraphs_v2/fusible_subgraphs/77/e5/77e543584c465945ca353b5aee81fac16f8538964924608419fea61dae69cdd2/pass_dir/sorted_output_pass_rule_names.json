@@ -1,0 +1,7 @@
+[
+  "DepthwiseConvMean_stride1_c256",
+  "DepthwiseConvMean_stride1_c384",
+  "DepthwiseConvMean_stride1_c768",
+  "DepthwiseConvMean_stride2_c256",
+  "DepthwiseConvMean_stride2_c384"
+]
