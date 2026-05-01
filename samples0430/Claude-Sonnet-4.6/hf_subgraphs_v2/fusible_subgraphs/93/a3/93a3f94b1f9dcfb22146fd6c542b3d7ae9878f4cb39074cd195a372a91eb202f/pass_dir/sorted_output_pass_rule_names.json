@@ -1,0 +1,1 @@
+["FusedAttention_bf16", "FusedAttention_fp16", "FusedAttention_fp32"]

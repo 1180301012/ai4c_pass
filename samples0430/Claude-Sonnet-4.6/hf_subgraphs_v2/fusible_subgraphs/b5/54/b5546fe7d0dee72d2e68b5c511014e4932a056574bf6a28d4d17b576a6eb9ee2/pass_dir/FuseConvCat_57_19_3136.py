@@ -1,0 +1,16 @@
+"""coat_mini stage-1: groups=57, C_head=19, N=3136, W=56"""
+import torch
+from pass_dir.coat_dispatch import coat_dispatch
+
+def pattern(in_5, in_1, in_0, in_2, in_3, in_6):
+    conv_out = torch.conv2d(in_5, in_1, in_0, (1, 1), (3, 3), (1, 1), 57)
+    tmp_3    = torch.cat([in_2, in_3, conv_out], dim=1)
+    tmp_4    = tmp_3.reshape(1, 8, 19, 3136)
+    tmp_5    = tmp_4.transpose(-1, -2)
+    return in_6 * tmp_5
+
+def replacement_args(in_5, in_1, in_0, in_2, in_3, in_6):
+    return (in_5, in_1, in_0, in_2, in_3, in_6, "57_19_3136_56")
+
+def replacement_func():
+    return coat_dispatch

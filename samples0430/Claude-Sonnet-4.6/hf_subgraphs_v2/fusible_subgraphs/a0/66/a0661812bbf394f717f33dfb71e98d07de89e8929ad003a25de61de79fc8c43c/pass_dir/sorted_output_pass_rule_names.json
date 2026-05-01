@@ -1,0 +1,6 @@
+[
+  "FuseLinear_Dropout0p1_Trans12_LT",
+  "FuseLinear_Dropout0p05_Trans12_LT",
+  "FuseLinear_Dropout0p0_Trans12_LT",
+  "FuseLinear_Dropout0p0_Trans12_TL"
+]

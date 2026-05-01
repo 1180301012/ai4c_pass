@@ -1,0 +1,23 @@
+[
+  "pass_b1_nh2_s11_h128",
+  "pass_b1_nh2_s12_h128",
+  "pass_b1_nh2_s64_h128",
+  "pass_b1_nh2_s512_h128",
+  "pass_b4_nh2_s512_h128",
+  "pass_b8_nh2_s256_h128",
+  "pass_b64_nh2_s128_h128",
+  "pass_b1_nh4_s12_h256",
+  "pass_b1_nh4_s64_h256",
+  "pass_b4_nh4_s512_h256",
+  "pass_b64_nh4_s128_h256",
+  "pass_b1_nh8_s64_h512",
+  "pass_b1_nh12_s64_h768",
+  "pass_b8_nh12_s256_h768",
+  "pass_b64_nh12_s128_h768",
+  "pass_b16_nh2_s128_h128_fp16cast",
+  "pass_b1_nh2_s12_h128_fp16cast",
+  "pass_b128_nh8_s64_h512_fp16cast",
+  "pass_b1_nh4_s12_h256_fp16cast",
+  "pass_b16_nh2_s128_h128_bf16cast",
+  "pass_b1_nh4_s12_h256_bf16cast"
+]

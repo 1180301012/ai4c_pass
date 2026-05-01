@@ -1,0 +1,1 @@
+["FuseTorchAddLayerNorm_H1024", "FuseTorchAddLayerNorm_H2048", "FuseFullModel_H1024", "FuseFullModel_H2048", "FuseAddDropoutLayerNorm_H1024", "FuseAddDropoutLayerNorm_H2048"]
