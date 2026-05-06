@@ -1,0 +1,16 @@
+[
+  "Conv1x1Slice_s2_2048r0",
+  "Conv1x1Slice_s2_2048r1",
+  "Conv1x1Slice_s1_64r0",
+  "Conv1x1Slice_s1_64r1",
+  "Conv1x1Slice_s1_128r0",
+  "Conv1x1Slice_s1_128r1",
+  "Conv1x1Slice_s1_256r0",
+  "Conv1x1Slice_s1_256r1",
+  "Conv1x1Slice_s1_512r0",
+  "Conv1x1Slice_s1_512r1",
+  "Conv1x1Slice_s1_1024r0",
+  "Conv1x1Slice_s1_1024r1",
+  "Conv1x1Slice_s1_2048r0",
+  "Conv1x1Slice_s1_2048r1"
+]

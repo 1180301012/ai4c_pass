@@ -1,0 +1,9 @@
+[
+  "FuseBERTLargeEmbedLayerNorm",
+  "FuseMegaBERTEmbedLayerNorm",
+  "FuseMegaBERTFloat32Single",
+  "FuseTinyBERT64Double",
+  "FuseBigBird32Single",
+  "FuseTinyMega64Single",
+  "FuseBigBird768Single"
+]

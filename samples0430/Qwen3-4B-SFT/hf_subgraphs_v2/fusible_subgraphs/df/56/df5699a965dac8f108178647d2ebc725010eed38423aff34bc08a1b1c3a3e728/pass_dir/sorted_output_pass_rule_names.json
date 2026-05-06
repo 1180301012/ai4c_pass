@@ -1,0 +1,14 @@
+[
+  "FuseCatViewTransposeCatViewChunk_B1_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B4_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B8_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B32_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B64_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B128_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B512_512_20_64_48",
+  "FuseCatViewTransposeCatViewChunk_B4_80_40_32_24",
+  "FuseCatViewTransposeCatViewChunk_B8_80_40_32_24",
+  "FuseCatViewTransposeCatViewChunk_B32_80_40_32_24",
+  "FuseCatViewTransposeCatViewChunk_B64_80_40_32_24",
+  "FuseCatViewTransposeCatViewChunk_B128_80_40_32_24"
+]
